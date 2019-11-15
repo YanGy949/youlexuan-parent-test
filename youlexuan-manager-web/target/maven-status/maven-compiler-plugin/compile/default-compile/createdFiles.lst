@@ -1,0 +1,11 @@
+com\offcn\content\controller\ContentController.class
+com\offcn\sellergoods\controller\LoginController.class
+com\offcn\content\controller\ContentCategoryController.class
+com\offcn\sellergoods\controller\SellerController.class
+com\offcn\sellergoods\controller\UserController.class
+com\offcn\sellergoods\controller\TypeTemplateController.class
+com\offcn\sellergoods\controller\BrandController.class
+com\offcn\sellergoods\controller\ItemCatController.class
+com\offcn\content\controller\UploadController.class
+com\offcn\sellergoods\controller\GoodsController.class
+com\offcn\sellergoods\controller\SpecificationController.class
