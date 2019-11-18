@@ -47,7 +47,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void updateAuditStatus(Long[] ids, String status) {
-        for(Long id : ids){
+        for (Long id : ids) {
             TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
             tbGoods.setAuditStatus(status);
             goodsMapper.updateByPrimaryKeySelective(tbGoods);
@@ -56,7 +56,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void updateMarketable(Long[] ids, String status) {
-        for(Long id : ids){
+        for (Long id : ids) {
             TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
             tbGoods.setIsMarketable(status);
             goodsMapper.updateByPrimaryKeySelective(tbGoods);
@@ -79,7 +79,7 @@ public class GoodsServiceImpl implements GoodsService {
             String title = goods.getGoods().getGoodsName();
             Map<String, Object> specs = JSON.parseObject(item.getSpec());
             for (String key : specs.keySet()) {
-                title += " "+specs.get(key);
+                title += " " + specs.get(key);
             }
             item.setTitle(title);
             item.setSellerId(goods.getGoods().getSellerId());
@@ -97,9 +97,9 @@ public class GoodsServiceImpl implements GoodsService {
             TbItemCat itemCat = itemCatMapper.selectByPrimaryKey(goods.getGoods().getCategory3Id());
             item.setCategory(itemCat.getName());
 
-            List<Map> imageList = JSON.parseArray(goods.getGoodsDesc().getItemImages(), Map.class) ;
-            if(imageList.size()>0){
-                item.setImage ( (String)imageList.get(0).get("url"));
+            List<Map> imageList = JSON.parseArray(goods.getGoodsDesc().getItemImages(), Map.class);
+            if (imageList.size() > 0) {
+                item.setImage((String) imageList.get(0).get("url"));
             }
 
             itemMapper.insert(item);
@@ -180,7 +180,7 @@ public class GoodsServiceImpl implements GoodsService {
                 criteria.andSellerIdEqualTo(goods.getSellerId());
             }
             if (goods.getGoodsName() != null && goods.getGoodsName().length() > 0) {
-                criteria.andGoodsNameLike("%"+goods.getGoodsName()+"%");
+                criteria.andGoodsNameLike("%" + goods.getGoodsName() + "%");
             }
             if (goods.getAuditStatus() != null && goods.getAuditStatus().length() > 0) {
                 String status = goods.getAuditStatus();
@@ -192,7 +192,7 @@ public class GoodsServiceImpl implements GoodsService {
                 criteria.andIsMarketableLike("%" + goods.getIsMarketable() + "%");
             }
             if (goods.getIsDelete() != null && goods.getIsDelete().length() > 0) {
-                criteria.andIsDeleteNotEqualTo("1");
+                criteria.andIsDeleteEqualTo(goods.getIsDelete());
             }
         }
 
@@ -200,4 +200,26 @@ public class GoodsServiceImpl implements GoodsService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+    @Override
+    public PageResult findGoods(TbGoods goods, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        TbGoodsExample example = new TbGoodsExample();
+        Criteria criteria = example.createCriteria();
+
+        if (goods != null) {
+            if (goods.getGoodsName() != null && goods.getGoodsName().length() > 0) {
+                criteria.andGoodsNameLike("%" + goods.getGoodsName() + "%");
+            }
+            if (goods.getAuditStatus() != null && goods.getAuditStatus().length() > 0) {
+                criteria.andAuditStatusEqualTo(goods.getAuditStatus());
+            }
+            if (goods.getIsDelete() != null && goods.getIsDelete().length() > 0) {
+                criteria.andIsDeleteNotEqualTo(goods.getIsDelete());
+            }
+        }
+
+        Page<TbGoods> page = (Page<TbGoods>) goodsMapper.selectByExample(example);
+        return new PageResult(page.getTotal(), page.getResult());
+    }
 }

@@ -12,7 +12,8 @@ import java.util.List;
  */
 public interface GoodsService {
 
-	/**
+
+    /**
 	 * 商品审核
 	 * @param ids
 	 * @param status
@@ -79,5 +80,6 @@ public interface GoodsService {
 	 * @return
 	 */
 	public PageResult findPage(TbGoods goods, int pageNum, int pageSize);
-	
+
+    public PageResult findGoods(TbGoods goods, int pageNum, int pageSize);
 }

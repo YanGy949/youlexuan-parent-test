@@ -141,5 +141,10 @@ public class GoodsController {
 //		goods.setSellerId(name);
 		return goodsService.findPage(goods, page, rows);		
 	}
+
+	@RequestMapping("/findGoods")
+	public PageResult findGoods(@RequestBody TbGoods goods, int page, int rows) {
+		return goodsService.findGoods(goods, page, rows);
+	}
 	
 }

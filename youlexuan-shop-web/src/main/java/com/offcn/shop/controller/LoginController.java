@@ -38,6 +38,9 @@ public class LoginController {
         String showWebLastLoginTime = jedis.hget("showWebLastLoginTime", name);
         if (showWebLastLoginTime == null) {
             map.put("lastLoginTime", "当前为首次登录");
+            Map<String, String> hash = new HashMap<>();
+            hash.put(name, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            jedis.hmset("showWebLastLoginTime", hash);
             return map;
         } else {
             if (lastTime != null && !lastTime.equals("")) {
